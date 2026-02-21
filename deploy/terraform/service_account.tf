@@ -26,6 +26,8 @@ resource "google_project_iam_member" "sa_roles" {
     "roles/cloudsql.admin",           # For Cloud SQL
     "roles/cloudtrace.admin",         # For Cloud Trace
     "roles/artifactregistry.admin",   # For Artifact Registry
+    "roles/artifactregistry.writer",  # For Artifact Registry
+    "roles/artifactregistry.reader",  # For Artifact Registry
   ])
   project = var.project_id
   role    = each.key
