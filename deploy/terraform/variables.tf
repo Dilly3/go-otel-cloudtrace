@@ -40,3 +40,10 @@ variable "DB_PASSWORD" {
   description = "Cloud SQL database password"
   sensitive   = true
 }
+
+variable "DB_HOST" {
+  type        = string
+  description = "Cloud SQL database host"
+  default     = ""
+}
+  

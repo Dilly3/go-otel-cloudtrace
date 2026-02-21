@@ -34,17 +34,38 @@ jobs:
           docker push us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/dilly3-repo/otel-mart-api:latest
 
       # 3. Deploy to Cloud Run
-      - name: Deploy
-        uses: 'google-github-actions/deploy-cloudrun@v1'
+      # - name: Deploy
+      #   uses: 'google-github-actions/deploy-cloudrun@v1'
+      #   with:
+      #     service: ${{ env.SERVICE }}
+      #     image: "us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/dilly3-repo/otel-mart-api:latest" 
+      #     region: ${{ env.REGION }}
+      #     env_vars: |
+      #       APP_ENV=production
+      #       GOOGLE_CLOUD_PROJECT=${{ env.PROJECT_ID }}
+      #       DB_HOST=${{ secrets.DB_HOST }}
+      #       DB_PORT=5432
+      #       DB_NAME=otel-mart
+      #       DB_USER=otel-user
+      #       DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
         with:
-          service: ${{ env.SERVICE }}
-          image: "us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/dilly3-repo/otel-mart-api:latest" 
-          region: ${{ env.REGION }}
-          env_vars: |
-            APP_ENV=production
-            GOOGLE_CLOUD_PROJECT=${{ env.PROJECT_ID }}
-            DB_HOST=${{ secrets.DB_HOST }}
-            DB_PORT=5432
-            DB_NAME=otel-mart
-            DB_USER=otel-user
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init
+        working-directory: ./deploy/terraform
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: ./deploy/terraform
+        run: |
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          cat > override.auto.tfvars <<EOF
+          project_id = "${{ env.PROJECT_ID }}"
+          region = "${{ env.REGION }}"
+          DB_PASSWORD = "${{ secrets.DB_PASSWORD }}"
+          DB_HOST = "${{ secrets.DB_HOST }}"
+          EOF
+          cat override.auto.tfvars
+          terraform apply -auto-approve

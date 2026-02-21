@@ -33,6 +33,12 @@ resource "google_project_iam_member" "sa_roles" {
   role    = each.key
   member  = "serviceAccount:${google_service_account.otel-mart-sa2.email}"
 }
+resource "google_project_iam_member" "sa_act_as" {
+  project = var.project_id
+  role    = "roles/iam.serviceAccountUser"
+  member  = "serviceAccount:${google_service_account.otel-mart-sa2.email}"
+}
+
 
 # Create service account key
 resource "google_service_account_key" "otel-mart-sa2" {
