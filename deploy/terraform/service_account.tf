@@ -29,7 +29,6 @@ resource "google_project_iam_member" "sa_roles" {
     "roles/artifactregistry.writer",  # For Artifact Registry
     "roles/artifactregistry.reader",  # For Artifact Registry
     "roles/storage.objectAdmin", # Storage Object
-    "roles/storage.objects.list",
   ])
   project = var.project_id
   role    = each.key
@@ -39,6 +38,11 @@ resource "google_project_iam_member" "sa_act_as" {
   project = var.project_id
   role    = "roles/iam.serviceAccountUser"
   member  = "serviceAccount:${google_service_account.otel-mart-sa2.email}"
+}
+resource "google_storage_bucket_iam_member" "terraform_state_access" {
+  bucket = "open-telemetry-1000-terraform-state"
+  role   = "roles/storage.objectAdmin"
+  member = "serviceAccount:otel-mart-sa2@open-telemetry-1000.iam.gserviceaccount.com"
 }
 
 
