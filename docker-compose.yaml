@@ -1,0 +1,10 @@
+version: "3"
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true # Turn on the OTLP receiver
+    ports:
+      - "16686:16686" # The UI port (Web Browser)
+      - "4317:4317"   # The OTLP gRPC port (Data Receiver)
+      - "4318:4318"   # The OTLP HTTP port (Data Receiver)

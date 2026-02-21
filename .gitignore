@@ -1,2 +1,8 @@
 key.json
 key2.json
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfstate.backup
+terraform.tfstate.*
+.terraform.lock.hcl

@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  otel-mart:
+    build:
+      context: .
+      dockerfile: build/Dockerfile
+    environment:
+      - APP_ENV=dev
+      - DATABASE_URL=postgres://user:pass@postgres:5438/otelmart?sslmode=disable
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4317
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - jaeger
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: otelmart
+    ports:
+      - "5438:5432"
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - "16686:16686" # UI
+      - "4317:4317"   # gRPC
