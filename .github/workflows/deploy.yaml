@@ -68,7 +68,4 @@ jobs:
           DB_HOST = "${{ secrets.DB_HOST }}"
           EOF
           cat override.auto.tfvars
-          terraform import google_sql_database_instance.otel-mart-db-instance projects/open-telemetry-1000/instances/otel-mart-db-instance
-          terraform import google_sql_database.otel-mart-db projects/open-telemetry-1000/instances/otel-mart-db-instance/databases/otel-mart
-          terraform import google_sql_user.otel-mart-db-user projects/open-telemetry-1000/instances/otel-mart-db-instance/users/otel-user
           terraform apply -auto-approve
