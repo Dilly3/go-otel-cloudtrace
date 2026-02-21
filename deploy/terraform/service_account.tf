@@ -29,6 +29,7 @@ resource "google_project_iam_member" "sa_roles" {
     "roles/artifactregistry.writer",  # For Artifact Registry
     "roles/artifactregistry.reader",  # For Artifact Registry
     "roles/storage.objectAdmin", # Storage Object
+    "roles/storage.objects.list",
   ])
   project = var.project_id
   role    = each.key

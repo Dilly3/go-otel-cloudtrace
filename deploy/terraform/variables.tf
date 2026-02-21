@@ -38,6 +38,7 @@ variable "DB_USER" {
 variable "DB_PASSWORD" {
   type        = string
   description = "Cloud SQL database password"
+  default     = ""
   sensitive   = true
 }
 
