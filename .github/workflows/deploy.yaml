@@ -29,7 +29,7 @@ jobs:
       # 2. Build and Push Container
       - name: Build and Push
         run: |
-          gcloud auth configure-docker
+          gcloud auth configure-docker us-central1-docker.pkg.dev
           docker build -t us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/dilly3-repo/otel-mart-api:latest -f build/Dockerfile .
           docker push us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/dilly3-repo/otel-mart-api:latest
 
