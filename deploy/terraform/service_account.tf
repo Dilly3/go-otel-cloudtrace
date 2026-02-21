@@ -49,6 +49,11 @@ resource "google_storage_bucket_iam_member" "terraform_state_access2" {
   role   = "roles/storage.objectAdmin"
   member = "serviceAccount:${google_service_account.otel-mart-sa2.email}"
 }
+resource "google_storage_bucket_iam_member" "terraform_state_access3" {
+  bucket = "open-telemetry-1000-terraform-state"
+  role   = "roles/storage.admin"
+  member = "serviceAccount:${google_service_account.otel-mart-sa2.email}"
+}
 
 
 # Create service account key
